@@ -1,13 +1,13 @@
 package command
 
 import request.CreateAccountRequest
-import service.BankAccountService
+import service.live.BankAccountServiceLive
 import validator.CreateAccountRequestValidator
 
 @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
 class CreateAccountCommand(
     private val createAccountRequestValidator: CreateAccountRequestValidator,
-    private val bankAccountService: BankAccountService
+    private val bankAccountService: BankAccountServiceLive
 ) : ValueCommand<CreateAccountRequest, Long> {
     override suspend fun process(createAccountRequest: CreateAccountRequest): Long {
         createAccountRequestValidator.validate(createAccountRequest)

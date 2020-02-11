@@ -1,11 +1,11 @@
-package service
+package service.live
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
 import repository.InMemoryBankAccountStorage
-import service.account.Account
-import service.operation.AccountManagingService
+import service.live.account.Account
+import service.live.operation.AccountManagingService
 import java.math.BigDecimal
 import java.util.concurrent.Phaser
 import java.util.concurrent.ThreadLocalRandom
@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicReferenceArray
 class BankAccountServiceStressTest {
     private val accountStorage = InMemoryBankAccountStorage()
     private val accountManagingService = AccountManagingService(accountStorage)
-    private val bankAccountService = BankAccountService(accountStorage, accountManagingService)
+    private val bankAccountService = BankAccountServiceLive(accountStorage, accountManagingService)
 
     private val phaser = Phaser(THREADS + 1)
     private val expectedCurrent = AtomicReferenceArray<BigDecimal>(N + 1)
@@ -26,11 +26,11 @@ class BankAccountServiceStressTest {
     fun `pass multithreaded stress-test`() {
         initializeBankAccounts()
         repeat { accountId ->
-            bankAccountService.deposit(accountId, MEAN)
+            bankAccountService.deposit(accountId, START)
         }
         repeat { accountId ->
-            assertEquals(MEAN, bankAccountService.bankAccountInfo(accountId).amount)
-            expectedCurrent.set(accountId.toInt(), MEAN)
+            assertEquals(START, bankAccountService.bankAccountInfo(accountId).amount)
+            expectedCurrent.set(accountId.toInt(), START)
         }
         val testThreads = Array(THREADS) { threadId ->
             val thread = TestThread(threadId)
@@ -136,14 +136,14 @@ class BankAccountServiceStressTest {
 
         private fun nextRoundAmount() = (nextAmount() + MOD - BigDecimal.ONE) / MOD * MOD
 
-        private fun nextAmount() = BigDecimal((rnd.nextInt(AMT) + 1).toString())
+        private fun nextAmount() = BigDecimal((rnd.nextInt(NEXT_AMOUNT) + 1).toString())
     }
 
     companion object {
         private const val N = 100
-        private val MEAN = BigDecimal("1000000000.0")
-        private const val AMT = 1000 // AMT << MEAN, so that probability of over/under flow is negligible
-        private val MOD = BigDecimal("100.0") // all deposits / withdrawals are divisible by MOD
+        private val START = BigDecimal("1000000000.0")
+        private const val NEXT_AMOUNT = 1000 // NEXT_AMOUNT << START, so that probability of over/under flow is negligible
+        private val MOD = BigDecimal("100.0")
         private const val THREADS = 8
         private const val TOTAL_PHASES = 20
         private const val PHASE_DURATION_MILLIS = 1000

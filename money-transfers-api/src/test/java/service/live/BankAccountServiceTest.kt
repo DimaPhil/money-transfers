@@ -1,18 +1,18 @@
-package service
+package service.live
 
 import exception.NotEnoughBalanceException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import repository.InMemoryBankAccountStorage
-import service.account.Account
-import service.operation.AccountManagingService
+import service.live.account.Account
+import service.live.operation.AccountManagingService
 import java.math.BigDecimal
 
 class BankAccountServiceTest {
     private val accountStorage = InMemoryBankAccountStorage()
     private val accountManagingService = AccountManagingService(accountStorage)
-    private val bankAccountService = BankAccountService(accountStorage, accountManagingService)
+    private val bankAccountService = BankAccountServiceLive(accountStorage, accountManagingService)
 
     @Test
     fun `test deposit functionality`() {

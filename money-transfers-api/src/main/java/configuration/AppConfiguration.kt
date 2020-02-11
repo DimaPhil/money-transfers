@@ -10,8 +10,8 @@ import controller.BankOperationsController
 import extensions.bindSingleton
 import org.kodein.di.Kodein
 import repository.InMemoryBankAccountStorage
-import service.BankAccountService
-import service.operation.AccountManagingService
+import service.live.BankAccountServiceLive
+import service.live.operation.AccountManagingService
 import validator.BankAccountInfoRequestValidator
 import validator.CreateAccountRequestValidator
 import validator.DepositRequestValidator
@@ -21,13 +21,10 @@ import validator.WithdrawRequestValidator
 fun Kodein.MainBuilder.setupApplication() {
     /* Repositories */
     val bankAccountRepository = InMemoryBankAccountStorage()
-    bindSingleton { bankAccountRepository }
 
     /* Services */
     val accountManagingService = AccountManagingService(bankAccountRepository)
-    val bankAccountService = BankAccountService(bankAccountRepository, accountManagingService)
-    bindSingleton { accountManagingService }
-    bindSingleton { bankAccountService }
+    val bankAccountService = BankAccountServiceLive(bankAccountRepository, accountManagingService)
 
     /* Validators */
     val createAccountRequestValidator = CreateAccountRequestValidator()
@@ -35,11 +32,6 @@ fun Kodein.MainBuilder.setupApplication() {
     val bankAccountInfoRequestValidator = BankAccountInfoRequestValidator()
     val transferRequestValidator = TransferRequestValidator()
     val withdrawRequestValidator = WithdrawRequestValidator()
-    bindSingleton { createAccountRequestValidator }
-    bindSingleton { depositRequestValidator }
-    bindSingleton { bankAccountInfoRequestValidator }
-    bindSingleton { transferRequestValidator }
-    bindSingleton { withdrawRequestValidator }
 
     /* Commands */
     val createAccountCommand = CreateAccountCommand(createAccountRequestValidator, bankAccountService)
@@ -47,11 +39,6 @@ fun Kodein.MainBuilder.setupApplication() {
     val bankAccountInfoCommand = BankAccountInfoCommand(bankAccountInfoRequestValidator, bankAccountService)
     val transferCommand = TransferCommand(transferRequestValidator, bankAccountService)
     val withdrawCommand = WithdrawCommand(withdrawRequestValidator, bankAccountService)
-    bindSingleton { createAccountCommand }
-    bindSingleton { depositCommand }
-    bindSingleton { bankAccountInfoCommand }
-    bindSingleton { transferCommand }
-    bindSingleton { withdrawCommand }
 
     /* Controllers */
     bindSingleton { kodein ->

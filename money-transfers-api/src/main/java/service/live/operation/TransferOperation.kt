@@ -1,7 +1,7 @@
-package service.operation
+package service.live.operation
 
 import exception.NotEnoughBalanceException
-import service.account.AcquiredAccount
+import service.live.account.AcquiredAccount
 import java.math.BigDecimal
 import kotlin.math.max
 import kotlin.math.min
@@ -28,21 +28,14 @@ class TransferOperation(
     }
 
     private fun acquireTransferAccounts(): Pair<AcquiredAccount, AcquiredAccount>? {
-        if (fromId < toId) {
-            val from = accountManagingService.acquire(fromId, this) ?: return null
-            val to = accountManagingService.acquire(toId, this) ?: run {
-                accountManagingService.release(fromId, this)
-                return null
-            }
-            return Pair(from, to)
-        } else {
-            val to = accountManagingService.acquire(toId, this) ?: return null
-            val from = accountManagingService.acquire(fromId, this) ?: run {
-                accountManagingService.release(toId, this)
-                return null
-            }
-            return Pair(from, to)
+        val minId = min(fromId, toId)
+        val maxId = max(fromId, toId)
+        val from = accountManagingService.acquire(minId, this) ?: return null
+        val to = accountManagingService.acquire(maxId, this) ?: run {
+            accountManagingService.release(minId, this)
+            return null
         }
+        return if (fromId < toId) Pair(from, to) else Pair(to, from)
     }
 
     private fun releaseTransferAccounts() {

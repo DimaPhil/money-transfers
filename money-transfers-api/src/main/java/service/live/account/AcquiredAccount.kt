@@ -1,6 +1,6 @@
-package service.account
+package service.live.account
 
-import service.operation.Operation
+import service.live.operation.Operation
 import java.math.BigDecimal
 
 class AcquiredAccount(

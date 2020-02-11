@@ -1,7 +1,7 @@
 package repository
 
 import exception.UserDataValidationException
-import service.account.Account
+import service.live.account.Account
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -14,8 +14,6 @@ import java.util.concurrent.ConcurrentHashMap
  * Another solution which might be valid is H2 Database (which is in-memory and thus satisfies requirements):
  * - H2 is scalable
  * - H2 makes it more easy to move application to production (because supports the same SQL commands)
- *
- * But for the sake of simplicity in this test I decided to go with the easiest option.
  */
 class InMemoryBankAccountStorage : AtomicStorage<Long, Account> {
     private val storage = ConcurrentHashMap<Long, Account>()

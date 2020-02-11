@@ -19,9 +19,6 @@
 
         <!-- Ktor -->
         <kodein-di.version>6.5.1</kodein-di.version>
-        <h2.version>1.4.200</h2.version>
-        <exposed.version>0.20.1</exposed.version>
-        <openapi-generator.version>4.2.3</openapi-generator.version>
     </properties>
 
     <dependencies>
@@ -78,13 +75,6 @@
             <artifactId>kodein-di-framework-ktor-server-jvm</artifactId>
             <version>${kodein-di.version}</version>
         </dependency>
-
-        <!-- OpenAPI generator -->
-<!--        <dependency>-->
-<!--            <groupId>org.openapitools</groupId>-->
-<!--            <artifactId>openapi-generator</artifactId>-->
-<!--            <version>${openapi-generator.version}</version>-->
-<!--        </dependency>-->
     </dependencies>
 
     <repositories>

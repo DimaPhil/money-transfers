@@ -1,8 +1,8 @@
-package service.operation
+package service.live.operation
 
 import repository.AtomicStorage
-import service.account.Account
-import service.account.AcquiredAccount
+import service.live.account.Account
+import service.live.account.AcquiredAccount
 
 class AccountManagingService(private val accountStorage: AtomicStorage<Long, Account>) {
     /**
