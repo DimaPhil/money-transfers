@@ -40,7 +40,7 @@ java -jar money-transfers.jar
 
 I didn't have time to understand how to add support for Swagger/OpenAPI to Ktor, because it seems that it doesn't support them natively, so I will describe API specification below.
 
-The current implementation of API supports the following endpoints:
+Applications starts on port `8080`. The current implementation of API supports the following endpoints:
 
 * `/accounts`:
     * `POST`
