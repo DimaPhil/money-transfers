@@ -34,7 +34,7 @@
         <slf4j-api.version>1.7.26</slf4j-api.version>
 
         <!-- Kotlin -->
-        <kotlin.version>1.3.61</kotlin.version>
+        <kotlin.version>1.6.0</kotlin.version>
         <kotlinx-coroutines.version>1.3.3</kotlinx-coroutines.version>
         <kotlin-atomicfu.version>0.14.1</kotlin-atomicfu.version>
 
